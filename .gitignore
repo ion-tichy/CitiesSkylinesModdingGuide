@@ -1,0 +1,6 @@
+# Keep git repo clean from Sphinx and Venv specific files:
+venv
+docs/build
+
+#Linux
+*.directory

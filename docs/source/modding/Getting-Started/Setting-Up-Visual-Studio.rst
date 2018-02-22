@@ -69,6 +69,43 @@ To automatically copy the DLL to the mod directory after each build, follow thes
         //[assembly: AssemblyFileVersion("1.0.0.0")]
 
 
+Debugging
+=========
+This has been implemented with Visual Studio 2017 or Visual Studio Code, so you'll probably need to update to those, but it may work on older versions.
+
+Only tested on Windows:
+
+1. For Visual Studio 2017 (Free from www.visualstudio.com) in the installer, (or Tools->Get Tools and features), under Workloads, Mobile & Gaming, check the "Game development with Unity"
+2. For VS Code (free from https://code.visualstudio.com/) add C# and Mono Debug from the extensions in the marketplace
+3. Download mono.dll from http://www.orcas.net/cities_skylines/mono.dll (This is the version I build. Yes, I could have malicious code in there, so if you don't want to trust me, you can rebuild from source https://github.com/thardie/mono/tree/unity-5.6)
+4. Rename your original mono.dll (in C:\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Mono)
+5. Put the downloaded mono.dll in that directory
+6. Check your cities still works.
+7. Edit your system environment variables (Right click This PC/My computer->Properties->Advanced System Settings->Environment Variables->User Variables->New... 
+8. Add Variable named "MONO_DEBUGGER_AGENT", value "transport=dt_socket,address=127.0.0.1:56000,defer=y"
+9. OK, OK, OK.
+10. Make sure steam is NOT running (open task manager and kill it if you need to). Reboot if you want to be extra sure
+11. Launch cities any way you want. 
+12. Open debugger (VS 2017 with your mod's code loaded, Debug->Attach Unity Debugger->Input IP->127.0.0.1:56000) (For VS Code, see launch.json below)
+
+VS Code launch.json:
+
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Attach to Mono",
+			"request": "attach",
+			"type": "mono",
+			"address": "localhost",
+			"port": 56000
+		}
+	]
+}
+
+To disable debugging, rename or remove the environment variable. You'll need to kill/restart Steam for it to take effect.
+
+
 Kudos to `reimarvin <http://www.reddit.com/user/reimarvin>`__ for this post on reddit.
 
 Kudos to `walrus_pug <http://www.reddit.com/user/walrus_pug>`__ for the auto updating with the ``AssemblyVersion``.
